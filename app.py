@@ -124,20 +124,6 @@ if admin_key == "1234":   # ← şifreyi değiştir
         )
 
         # ---------------------------
-        # EXCEL İNDİR
-        # ---------------------------
-        excel_buffer = io.BytesIO()
-        df.to_excel(excel_buffer, index=False)
-        excel_buffer.seek(0)
-
-        st.download_button(
-            "Excel indir",
-            excel_buffer,
-            "veriler.xlsx",
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        )
-
-        # ---------------------------
         # VERİTABANI TEMİZLE
         # ---------------------------
         st.subheader("Veritabanı Temizleme")
@@ -152,5 +138,6 @@ if admin_key == "1234":   # ← şifreyi değiştir
 
 elif admin_key != "":
     st.error("Yanlış şifre")
+
 
 
