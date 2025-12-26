@@ -51,3 +51,19 @@ if st.button("Kaydet"):
     )
     conn.commit()
     st.success("Kaydedildi ✅")
+
+# girilenleri görebilmek için
+st.subheader("📊 Girilen Veriler")
+
+cursor.execute("""
+SELECT secim, deger, zaman
+FROM girisler
+ORDER BY zaman DESC
+""")
+
+rows = cursor.fetchall()
+
+if rows:
+    st.table(rows)
+else:
+    st.info("Henüz veri girilmedi")
