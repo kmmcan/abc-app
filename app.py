@@ -2,6 +2,7 @@ import streamlit as st
 import sqlite3
 from datetime import datetime
 import os
+import io
 
 # ----------------------------
 # Veritabanı yolu
@@ -53,17 +54,102 @@ if st.button("Kaydet"):
     st.success("Kaydedildi ✅")
 
 # girilenleri görebilmek için
-st.subheader("📊 Girilen Veriler")
+import pandas as pd
+import io
 
-cursor.execute("""
-SELECT secim, deger, zaman
-FROM girisler
-ORDER BY zaman DESC
-""")
+st.subheader("🔐 Admin Paneli")
 
-rows = cursor.fetchall()
+admin_key = st.text_input("Admin şifresi", type="password")
 
-if rows:
-    st.table(rows)
-else:
-    st.info("Henüz veri girilmedi")
+if admin_key == "1234":   # ← şifreyi değiştir
+
+    st.success("Admin girişi başarılı")
+
+    # ---------------------------
+    # VERİLERİ ÇEK
+    # ---------------------------
+    cursor.execute("""
+    SELECT secim, deger, zaman
+    FROM girisler
+    ORDER BY zaman DESC
+    """)
+
+    rows = cursor.fetchall()
+
+    if rows:
+        table_data = []
+
+        for secim, deger, zaman in rows:
+            table_data.append({
+                "A": deger if secim == "A" else None,
+                "B": deger if secim == "B" else None,
+                "C": deger if secim == "C" else None,
+                "Zaman": zaman
+            })
+
+        df = pd.DataFrame(table_data)
+
+        # ---------------------------
+        # TABLO
+        # ---------------------------
+        st.subheader("📋 Kayıtlar")
+        st.dataframe(df, use_container_width=True, height=400)
+
+        # ---------------------------
+        # TOPLAMLAR
+        # ---------------------------
+        st.subheader("🔢 Toplamlar")
+
+        cursor.execute("""
+        SELECT secim, SUM(deger)
+        FROM girisler
+        GROUP BY secim
+        """)
+
+        totals = cursor.fetchall()
+
+        for secim, toplam in totals:
+            st.write(f"**{secim}** toplamı: {toplam}")
+
+        # ---------------------------
+        # CSV İNDİR
+        # ---------------------------
+        csv = df.to_csv(index=False).encode("utf-8")
+
+        st.download_button(
+            "📥 CSV indir",
+            csv,
+            "veriler.csv",
+            "text/csv"
+        )
+
+        # ---------------------------
+        # EXCEL İNDİR
+        # ---------------------------
+        excel_buffer = io.BytesIO()
+        df.to_excel(excel_buffer, index=False)
+        excel_buffer.seek(0)
+
+        st.download_button(
+            "📥 Excel indir",
+            excel_buffer,
+            "veriler.xlsx",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+
+        # ---------------------------
+        # VERİTABANI TEMİZLE
+        # ---------------------------
+        st.subheader("🗑️ Veritabanı Temizleme")
+
+        if st.button("⚠️ TÜM VERİLERİ SİL"):
+            cursor.execute("DELETE FROM girisler")
+            conn.commit()
+            st.success("Tüm kayıtlar silindi")
+
+    else:
+        st.info("Henüz veri yok")
+
+elif admin_key != "":
+    st.error("Yanlış şifre")
+
