@@ -51,13 +51,13 @@ if st.button("Kaydet"):
         (secim, deger, datetime.now().isoformat())
     )
     conn.commit()
-    st.success("Kaydedildi ✅")
+    st.success("Kaydedildi")
 
 # girilenleri görebilmek için
 import pandas as pd
 import io
 
-st.subheader("🔐 Admin Paneli")
+st.subheader("Admin Paneli")
 
 admin_key = st.text_input("Admin şifresi", type="password")
 
@@ -92,13 +92,13 @@ if admin_key == "1234":   # ← şifreyi değiştir
         # ---------------------------
         # TABLO
         # ---------------------------
-        st.subheader("📋 Kayıtlar")
+        st.subheader("Kayıtlar")
         st.dataframe(df, use_container_width=True, height=400)
 
         # ---------------------------
         # TOPLAMLAR
         # ---------------------------
-        st.subheader("🔢 Toplamlar")
+        st.subheader("Toplamlar")
 
         cursor.execute("""
         SELECT secim, SUM(deger)
@@ -117,7 +117,7 @@ if admin_key == "1234":   # ← şifreyi değiştir
         csv = df.to_csv(index=False).encode("utf-8")
 
         st.download_button(
-            "📥 CSV indir",
+            "CSV indir",
             csv,
             "veriler.csv",
             "text/csv"
@@ -131,7 +131,7 @@ if admin_key == "1234":   # ← şifreyi değiştir
         excel_buffer.seek(0)
 
         st.download_button(
-            "📥 Excel indir",
+            "Excel indir",
             excel_buffer,
             "veriler.xlsx",
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -140,9 +140,9 @@ if admin_key == "1234":   # ← şifreyi değiştir
         # ---------------------------
         # VERİTABANI TEMİZLE
         # ---------------------------
-        st.subheader("🗑️ Veritabanı Temizleme")
+        st.subheader("Veritabanı Temizleme")
 
-        if st.button("⚠️ TÜM VERİLERİ SİL"):
+        if st.button("TÜM VERİLERİ SİL"):
             cursor.execute("DELETE FROM girisler")
             conn.commit()
             st.success("Tüm kayıtlar silindi")
@@ -152,4 +152,5 @@ if admin_key == "1234":   # ← şifreyi değiştir
 
 elif admin_key != "":
     st.error("Yanlış şifre")
+
 
