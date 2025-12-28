@@ -37,11 +37,12 @@ st.title("A / B / C Sayı Girişi")
 col1, col2 = st.columns(2)
 
 with col1:
-    secim1 = st.radio("Seçim", ["Kur'an Hatmi", "70bin Tevhid Hatmi", "Delailül Hayrat Hatmi","18bin Salatu Selam","Salavat-ı Şerif","Seyyid'ül İstiğfar","Estağfirullah"])
-    secim2 = st.radio("",["Salatu Tefriciye","Salatu Tuncina","Şifa Salatu Selamı","Salatu Fatih","Salli Barik","Salavatı Kübra","..ve sayısız Salavat Hizbi","..ve sayısız Salatu Selam"])
-    secim3 = st.radio("",["..ve sayısız Tevhid","İhlas","Fatiha","Ayetel Kürsi","Kevser","Felak","Nas"])
-    secim4 = st.radio("",["Yasin","Duhan","Fetih","Muhammed","Rahman","Vakıa","Mülk","Secde","Nebe","Kıyame","Cuma","Buruc","Mutaffifin","Kehf"])
-    secim5 = st.radio("",["hasbiyallahu la ilahe","hasbunallahu","Hz Yunus asm duası","Subhanallahi vebihamdihi subhanallahil azim","subhanallahi vebihamdihi","Subhanallahi velhamdülillahi..","la havle vela kuvvete"])
+    secim1 = st.radio("Seçim", ["Kur'an Hatmi", "70bin Tevhid Hatmi", "Delailül Hayrat Hatmi","18bin Salatu Selam","Salavat-ı Şerif","Seyyid'ül İstiğfar",
+                                "Estağfirullah","Salatu Tefriciye","Salatu Tuncina","Şifa Salatu Selamı","Salatu Fatih","Salli Barik","Salavatı Kübra",
+                                "..ve sayısız Salavat Hizbi","..ve sayısız Salatu Selam","..ve sayısız Tevhid","İhlas","Fatiha","Ayetel Kürsi","Kevser","Felak","Nas",
+                                "Yasin","Duhan","Fetih","Muhammed","Rahman","Vakıa","Mülk","Secde","Nebe","Kıyame","Cuma","Buruc","Mutaffifin","Kehf",
+                                "hasbiyallahu la ilahe","hasbunallahu","Hz Yunus asm duası","Subhanallahi vebihamdihi subhanallahil azim","subhanallahi vebihamdihi",
+                                "Subhanallahi velhamdülillahi..","la havle vela kuvvete"])
 
 with col2:
     deger = st.number_input("Sayı gir", step=1.0)
@@ -142,6 +143,7 @@ if admin_key == "1234":   # ← şifreyi değiştir
 
 elif admin_key != "":
     st.error("Yanlış şifre")
+
 
 
 
