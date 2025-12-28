@@ -33,7 +33,7 @@ conn.commit()
 # UI
 # ----------------------------
 
-st.title("Derviş Çeyizi Hatim Sayımı")
+st.title("Hatim Sayımı")
 
 col1, col2 = st.columns(2)
 
@@ -156,6 +156,7 @@ if admin_key == "281267":   # ← şifreyi değiştir
 
 elif admin_key != "":
     st.error("Yanlış şifre")
+
 
 
 
