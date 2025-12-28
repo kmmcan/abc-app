@@ -59,6 +59,7 @@ with col1:
 with col2:
     deger = st.number_input("Sayı gir", step=1.0)
     kaydet = st.button("Kaydet")  #kaydet butonu sayının altında olsun diye
+    mesaj_alani = st.empty()   # 👈 kaydedildi mesajı burada çıksın
 
 # ----------------------------
 # Kayıt
@@ -69,7 +70,7 @@ if kaydet:
         (secim, deger, datetime.now().isoformat())
     )
     conn.commit()
-    st.success("Kaydedildi")
+    mesaj_alani.success("Kaydedildi")
 
 # girilenleri görebilmek için
 import pandas as pd
@@ -154,6 +155,7 @@ if admin_key == "281267":   # ← şifreyi değiştir
 
 elif admin_key != "":
     st.error("Yanlış şifre")
+
 
 
 
