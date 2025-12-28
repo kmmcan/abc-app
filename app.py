@@ -37,20 +37,33 @@ st.title("A / B / C Sayı Girişi")
 col1, col2 = st.columns(2)
 
 with col1:
-    secim1 = st.radio("Seçim", ["Kur'an Hatmi", "70bin Tevhid Hatmi", "Delailül Hayrat Hatmi","18bin Salatu Selam","Salavat-ı Şerif","Seyyid'ül İstiğfar",
-                                "Estağfirullah","Salatu Tefriciye","Salatu Tuncina","Şifa Salatu Selamı","Salatu Fatih","Salli Barik","Salavatı Kübra",
-                                "..ve sayısız Salavat Hizbi","..ve sayısız Salatu Selam","..ve sayısız Tevhid","İhlas","Fatiha","Ayetel Kürsi","Kevser","Felak","Nas",
-                                "Yasin","Duhan","Fetih","Muhammed","Rahman","Vakıa","Mülk","Secde","Nebe","Kıyame","Cuma","Buruc","Mutaffifin","Kehf",
-                                "hasbiyallahu la ilahe","hasbunallahu","Hz Yunus asm duası","Subhanallahi vebihamdihi subhanallahil azim","subhanallahi vebihamdihi",
-                                "Subhanallahi velhamdülillahi..","la havle vela kuvvete"])
+    SECIMLER = [
+    "Kur'an Hatmi", "70bin Tevhid Hatmi", "Delailül Hayrat Hatmi",
+    "18bin Salatu Selam", "Salavat-ı Şerif", "Seyyid'ül İstiğfar",
+    "Estağfirullah", "Salatu Tefriciye", "Salatu Tuncina",
+    "Şifa Salatu Selamı", "Salatu Fatih", "Salli Barik",
+    "Salavatı Kübra", "..ve sayısız Salavat Hizbi",
+    "..ve sayısız Salatu Selam", "..ve sayısız Tevhid",
+    "İhlas", "Fatiha", "Ayetel Kürsi", "Kevser", "Felak", "Nas",
+    "Yasin", "Duhan", "Fetih", "Muhammed", "Rahman", "Vakıa",
+    "Mülk", "Secde", "Nebe", "Kıyame", "Cuma", "Buruc",
+    "Mutaffifin", "Kehf", "hasbiyallahu la ilahe",
+    "hasbunallahu", "Hz Yunus asm duası",
+    "Subhanallahi vebihamdihi subhanallahil azim",
+    "subhanallahi vebihamdihi",
+    "Subhanallahi velhamdülillahi..",
+    "la havle vela kuvvete"]
 
+    secim = st.radio("Seçim", SECIMLER)
+    
 with col2:
     deger = st.number_input("Sayı gir", step=1.0)
+    kaydet = st.button("Kaydet")  #kaydet butonu sayının altında olsun diye
 
 # ----------------------------
 # Kayıt
 # ----------------------------
-if st.button("Kaydet"):
+if kaydet:
     cursor.execute(
         "INSERT INTO girisler (secim, deger, zaman) VALUES (?, ?, ?)",
         (secim, deger, datetime.now().isoformat())
@@ -66,7 +79,7 @@ st.subheader("Admin Paneli")
 
 admin_key = st.text_input("Admin şifresi", type="password")
 
-if admin_key == "1234":   # ← şifreyi değiştir
+if admin_key == "281267":   # ← şifreyi değiştir
 
     st.success("Admin girişi başarılı")
 
@@ -84,14 +97,12 @@ if admin_key == "1234":   # ← şifreyi değiştir
     if rows:
         table_data = []
 
-        for secim, deger, zaman in rows:
-            table_data.append({
-                "A": deger if secim == "A" else None,
-                "B": deger if secim == "B" else None,
-                "C": deger if secim == "C" else None,
-                "Zaman": zaman
-            })
-
+        for secim_db, deger, zaman in rows:
+            row = {s: None for s in SECIMLER}  # tüm sütunları boş başlat
+            row[secim_db] = deger              # seçileni doldur
+            row["Zaman"] = zaman               # zaman ekle
+            table_data.append(row)
+            
         df = pd.DataFrame(table_data)
 
         # ---------------------------
@@ -143,6 +154,7 @@ if admin_key == "1234":   # ← şifreyi değiştir
 
 elif admin_key != "":
     st.error("Yanlış şifre")
+
 
 
 
