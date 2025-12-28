@@ -32,7 +32,6 @@ conn.commit()
 # ----------------------------
 # UI
 # ----------------------------
-st.title("A / B / C Sayı Girişi")
 
 col1, col2 = st.columns(2)
 
@@ -54,7 +53,18 @@ with col1:
     "Subhanallahi velhamdülillahi..",
     "la havle vela kuvvete"]
 
-    secim = st.radio("Seçim", SECIMLER)
+    parca1 = SECIMLER[0::3]
+    parca2 = SECIMLER[1::3]
+    parca3 = SECIMLER[2::3]
+
+    c1, c2, c3 = st.columns(3)
+
+    secim1 = c1.radio(" ", parca1, index=None)
+    secim2 = c2.radio(" ", parca2, index=None)
+    secim3 = c3.radio(" ", parca3, index=None)
+
+
+    secim = secim1 or secim2 or secim3
     
 with col2:
     deger = st.number_input("Sayı gir", step=1.0)
@@ -155,6 +165,7 @@ if admin_key == "281267":   # ← şifreyi değiştir
 
 elif admin_key != "":
     st.error("Yanlış şifre")
+
 
 
 
